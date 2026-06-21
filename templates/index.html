@@ -7,70 +7,95 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <header>
-    <h1>❤️ Heart-Health Coach</h1>
-    <p class="tagline">Turn a cholesterol panel into a realistic, doable plan — and track progress.</p>
-    <p class="disclaimer">⚠️ Educational tool, not medical advice. Always confirm changes with a doctor.</p>
+  <header class="hero">
+    <div class="ecg" aria-hidden="true">
+      <svg viewBox="0 0 600 80" preserveAspectRatio="none">
+        <path class="ecg-line" d="M0,40 L120,40 L150,40 L165,18 L180,62 L195,40 L240,40 L420,40 L450,40 L465,12 L480,68 L495,40 L540,40 L600,40" />
+        <circle class="ecg-dot" r="4" />
+      </svg>
+    </div>
+    <h1><span class="heart">♥</span> Heart-Health Coach</h1>
+    <p class="tagline">Turn a cholesterol panel into a realistic, doable plan — and watch the numbers move.</p>
+    <p class="disclaimer">Educational tool, not medical advice. Always confirm changes with a doctor.</p>
   </header>
 
   <main>
-    <section class="card">
-      <h2>1 · Enter the details</h2>
+    <section class="card" id="form-card">
+      <div class="card-head"><span class="step">1</span><h2>Tell the coach the details</h2></div>
+
       <form id="plan-form">
-        <div class="grid">
-          <label>Name<input name="name" placeholder="Dad" /></label>
-          <label>Age<input name="age" type="number" placeholder="58" /></label>
-          <label>Sex
-            <select name="sex">
-              <option value="">—</option>
-              <option>Male</option>
-              <option>Female</option>
-            </select>
+        <fieldset class="lipids">
+          <legend>Latest blood panel <span class="legend-hint">— badges read against medical guideline ranges as you type</span></legend>
+          <div class="lipid-grid">
+            <label class="lipid">Total cholesterol
+              <input name="total_chol" type="number" inputmode="numeric" placeholder="240" data-lipid="total" />
+              <span class="badge" data-badge="total"></span>
+            </label>
+            <label class="lipid">LDL <small>("bad")</small>
+              <input name="ldl" type="number" inputmode="numeric" placeholder="160" data-lipid="ldl" />
+              <span class="badge" data-badge="ldl"></span>
+            </label>
+            <label class="lipid">HDL <small>("good")</small>
+              <input name="hdl" type="number" inputmode="numeric" placeholder="40" data-lipid="hdl" />
+              <span class="badge" data-badge="hdl"></span>
+            </label>
+            <label class="lipid">Triglycerides
+              <input name="triglycerides" type="number" inputmode="numeric" placeholder="180" data-lipid="trig" />
+              <span class="badge" data-badge="trig"></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>About the person</legend>
+          <div class="grid">
+            <label>Name<input name="name" placeholder="Dad" /></label>
+            <label>Age<input name="age" type="number" placeholder="58" /></label>
+            <label>Sex
+              <select name="sex"><option value="">—</option><option>Male</option><option>Female</option></select>
+            </label>
+            <label>Height<input name="height" placeholder="5'10&quot;" /></label>
+            <label>Weight (lbs)<input name="weight" type="number" placeholder="190" /></label>
+            <label>Activity level
+              <select name="activity">
+                <option value="">—</option><option>Mostly sedentary</option><option>Lightly active</option>
+                <option>Moderately active</option><option>Very active</option>
+              </select>
+            </label>
+            <label>Smokes?
+              <select name="smokes"><option value="">—</option><option>No</option><option>Yes</option></select>
+            </label>
+          </div>
+          <label class="full">Typical diet
+            <textarea name="diet" rows="2" placeholder="Red meat ~4x/week, fast food, soda daily, few vegetables"></textarea>
           </label>
-          <label>Height<input name="height" placeholder="5'10&quot;" /></label>
-          <label>Weight (lbs)<input name="weight" type="number" placeholder="190" /></label>
-          <label>Total cholesterol<input name="total_chol" type="number" placeholder="240" /></label>
-          <label>LDL ("bad")<input name="ldl" type="number" placeholder="160" /></label>
-          <label>HDL ("good")<input name="hdl" type="number" placeholder="40" /></label>
-          <label>Triglycerides<input name="triglycerides" type="number" placeholder="180" /></label>
-          <label>Activity level
-            <select name="activity">
-              <option value="">—</option>
-              <option>Mostly sedentary</option>
-              <option>Lightly active</option>
-              <option>Moderately active</option>
-              <option>Very active</option>
-            </select>
+          <label class="full">Goal — how much to lower &amp; by when
+            <input name="goal" placeholder="Lower LDL by 30 points in 3 months" />
           </label>
-          <label>Smokes?
-            <select name="smokes">
-              <option value="">—</option>
-              <option>No</option>
-              <option>Yes</option>
-            </select>
+          <label class="full">Other notes
+            <textarea name="notes" rows="2" placeholder="On blood pressure meds, family history of heart disease"></textarea>
           </label>
-        </div>
-        <label class="full">Typical diet
-          <textarea name="diet" rows="2" placeholder="Red meat ~4x/week, fast food, soda daily, few vegetables"></textarea>
-        </label>
-        <label class="full">Goal — how much to lower &amp; by when
-          <input name="goal" placeholder="Lower LDL by 30 points in 3 months" />
-        </label>
-        <label class="full">Other notes
-          <textarea name="notes" rows="2" placeholder="On blood pressure meds, family history of heart disease"></textarea>
-        </label>
-        <button type="submit" id="generate-btn">Generate plan</button>
+        </fieldset>
+
+        <button type="submit" id="generate-btn">
+          <span class="btn-label">Build the plan</span>
+        </button>
       </form>
     </section>
 
     <section class="card" id="plan-card" hidden>
-      <h2>2 · Your plan</h2>
+      <div class="card-head"><span class="step">2</span><h2>The plan</h2></div>
       <div id="plan-output"></div>
     </section>
 
     <section class="card">
-      <h2>3 · Track progress</h2>
-      <p class="hint">Log a new lab result each time he re-tests. The chart shows the trend.</p>
+      <div class="card-head"><span class="step">3</span><h2>Track progress</h2></div>
+      <p class="hint">Log each new lab result. The chart shows the LDL trend over time — the line you want heading down.</p>
+
+      <div id="chart-wrap" hidden>
+        <svg id="trend-chart" viewBox="0 0 640 220" role="img" aria-label="LDL trend over time"></svg>
+      </div>
+
       <form id="track-form" class="track-grid">
         <label>Date<input name="date" type="date" /></label>
         <label>Total<input name="total_chol" type="number" /></label>
@@ -80,6 +105,7 @@
         <label>Weight<input name="weight" type="number" /></label>
         <button type="submit">Log it</button>
       </form>
+
       <table id="entries-table" hidden>
         <thead>
           <tr><th>Date</th><th>Total</th><th>LDL</th><th>HDL</th><th>Trig.</th><th>Weight</th></tr>
@@ -89,7 +115,7 @@
     </section>
   </main>
 
-  <footer>Built with Claude · for my dad ❤️</footer>
+  <footer>Built with Claude · for my dad <span class="heart">♥</span></footer>
 
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
