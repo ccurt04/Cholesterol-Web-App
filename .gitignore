@@ -1,0 +1,11 @@
+# Secrets — never commit your API key
+.env
+
+# Personal health data stays local, off GitHub
+data/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/

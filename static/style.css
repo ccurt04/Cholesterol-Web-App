@@ -1,0 +1,184 @@
+/* Heart-Health Coach — calming wellness aesthetic (Soft UI).
+   Palette: sage green + warm off-white + gold accent + charcoal text.
+   Type: Cormorant Garamond (headings) / Montserrat (body). */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500;600&display=swap');
+
+:root {
+  --sage: #A8D5BA;
+  --sage-deep: #6FA98A;
+  --cream: #FBF8F2;
+  --card: #FFFFFF;
+  --gold: #C8A24B;
+  --gold-deep: #B08D38;
+  --charcoal: #2D3436;
+  --muted: #6B7280;
+  --line: #ECE7DD;
+  --warn-bg: #FBF3E4;
+  --warn-text: #8A6D1E;
+  --shadow: 0 10px 30px rgba(45, 52, 54, 0.06);
+  --shadow-hover: 0 14px 40px rgba(45, 52, 54, 0.1);
+  --radius: 18px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  color: var(--charcoal);
+  background:
+    radial-gradient(1200px 500px at 50% -200px, rgba(168, 213, 186, 0.35), transparent),
+    var(--cream);
+  line-height: 1.6;
+}
+
+header {
+  text-align: center;
+  padding: 56px 20px 24px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  margin: 0 0 8px;
+  letter-spacing: 0.5px;
+}
+
+.tagline { color: var(--muted); margin: 0 0 18px; font-size: 1.02rem; }
+
+.disclaimer {
+  display: inline-block;
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border: 1px solid #EAD9B0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  transition: box-shadow 0.25s ease;
+}
+.card:hover { box-shadow: var(--shadow-hover); }
+
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1.6rem;
+  margin: 0 0 18px;
+  color: var(--sage-deep);
+}
+
+.hint, .grid label, .full, .track-grid label { font-size: 0.9rem; }
+.hint { color: var(--muted); margin: -8px 0 16px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--charcoal);
+}
+label.full { margin-top: 14px; }
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #FCFBF8;
+  color: var(--charcoal);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--sage-deep);
+  box-shadow: 0 0 0 3px rgba(168, 213, 186, 0.35);
+}
+textarea { resize: vertical; }
+
+button {
+  margin-top: 22px;
+  background: var(--sage-deep);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 26px;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+button:hover { background: #5e9377; }
+button:active { transform: translateY(1px); }
+button:disabled { background: var(--muted); cursor: progress; opacity: 0.8; }
+
+.track-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+.track-grid button { margin-top: 0; background: var(--gold); }
+.track-grid button:hover { background: var(--gold-deep); }
+
+/* Rendered plan */
+#plan-output h1, #plan-output h2, #plan-output h3 {
+  color: var(--sage-deep);
+  margin: 18px 0 8px;
+}
+#plan-output h3 { font-size: 1.2rem; }
+#plan-output ul { padding-left: 20px; }
+#plan-output li { margin: 4px 0; }
+#plan-output p { margin: 8px 0; }
+
+.loading { color: var(--muted); font-style: italic; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 18px;
+  font-size: 0.9rem;
+}
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; }
+tbody tr:hover { background: #FAFBF9; }
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 20px 0 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
