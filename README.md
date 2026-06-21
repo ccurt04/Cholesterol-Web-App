@@ -16,12 +16,15 @@ with guardrails so it behaves like a responsible coach, not a doctor.
 ## What it does
 
 1. **Enter the details** — cholesterol numbers (total / LDL / HDL / triglycerides),
-   age, weight, activity, diet habits, and a goal.
+   age, weight, activity, diet habits, and a goal. As you type each lab value,
+   a **live color-coded badge** reads it against standard medical guideline
+   ranges (Optimal / Borderline / High) so the picture is clear instantly.
 2. **Get a plan** — Claude returns an evidence-based plan: where they stand, a
    realistic goal and timeline, specific diet and movement changes, and what to
    re-test and when.
-3. **Track progress** — log each new lab result; the app keeps a running history
-   so improvement is visible over time.
+3. **Track progress** — log each new lab result; a **custom SVG trend chart**
+   plots LDL over time against the "optimal" and "high" guideline bands, so
+   improvement (the line heading down) is visible at a glance.
 
 ---
 
