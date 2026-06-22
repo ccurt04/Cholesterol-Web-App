@@ -1,5 +1,8 @@
 # ❤️ Heart-Health Coach
 
+**🔗 Live demo: https://cholesterol-web-app.onrender.com**
+*(The hosted demo runs without an API key, so it returns a clearly-labeled sample plan. Run it locally with your own `ANTHROPIC_API_KEY` — see below — to generate plans tailored to the numbers you enter.)*
+
 A small web app that turns a cholesterol panel and everyday lifestyle habits into
 a **personalized, realistic action plan** — and tracks the numbers over time. I
 built it for my dad, who's working to lower his cholesterol.
