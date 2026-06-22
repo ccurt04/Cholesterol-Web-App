@@ -9,6 +9,8 @@ the UI and in build_system_prompt().
 
 import json
 import os
+import time
+from collections import deque
 from datetime import date
 from pathlib import Path
 
@@ -22,6 +24,12 @@ MODEL = "claude-opus-4-8"
 DATA_DIR = Path(__file__).parent / "data"
 DATA_DIR.mkdir(exist_ok=True)
 ENTRIES_FILE = DATA_DIR / "entries.json"
+
+# Rate limit for the public demo: cap how many plans (Claude calls) can run per
+# hour so a public URL can't run up the API bill. Tune via env vars.
+PLAN_RATE_LIMIT = int(os.environ.get("PLAN_RATE_LIMIT", "30"))
+PLAN_RATE_WINDOW = 3600  # seconds
+_plan_calls = deque()
 
 app = Flask(__name__)
 
@@ -109,6 +117,13 @@ def plan():
         return jsonify({"error": "Please enter at least a total or LDL cholesterol number."}), 400
     if not os.environ.get("ANTHROPIC_API_KEY"):
         return jsonify({"error": "Claude API key not set. Set ANTHROPIC_API_KEY and restart (see README)."}), 500
+    # Demo rate limit
+    now = time.time()
+    while _plan_calls and now - _plan_calls[0] > PLAN_RATE_WINDOW:
+        _plan_calls.popleft()
+    if len(_plan_calls) >= PLAN_RATE_LIMIT:
+        return jsonify({"error": "Demo limit reached for this hour. Please try again later."}), 429
+    _plan_calls.append(now)
     try:
         response = get_client().messages.create(
             model=MODEL,
