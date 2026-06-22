@@ -31,6 +31,34 @@ PLAN_RATE_LIMIT = int(os.environ.get("PLAN_RATE_LIMIT", "30"))
 PLAN_RATE_WINDOW = 3600  # seconds
 _plan_calls = deque()
 
+# Shown by the public demo when no API key is configured. It is a real example
+# of the app's output (generated with Claude), served so the hosted demo works
+# without a paid key. Running locally with ANTHROPIC_API_KEY set produces a plan
+# tailored to the numbers entered.
+SAMPLE_PLAN = """This is an educational tool, not medical advice — confirm any changes with your doctor before acting on them.
+
+### Where you stand today
+Your total cholesterol (240) and LDL (160) are both in the "high" range, your HDL (40) is on the low side, and your triglycerides (180) are borderline high. Together that's a pattern worth taking seriously, but it's also the kind that responds well to steady lifestyle changes.
+
+### A realistic goal & timeline
+Aiming to bring LDL down by roughly 15–25 points over the next 10–12 weeks is realistic through diet and activity alone. Bigger or faster drops usually need a doctor's involvement — so book a check-in and a repeat panel for about 12 weeks out.
+
+### Diet changes
+- **Cut back:** red and processed meat, fried/fast food, full-fat dairy, and sugary drinks — these drive saturated fat and triglycerides up.
+- **Add:** soluble fiber (oats, beans, lentils, apples, barley), fatty fish twice a week, nuts, olive oil, and plenty of vegetables.
+- **Swap:** soda for water or unsweetened tea; butter for olive oil; chips for a handful of almonds.
+
+### Movement plan
+Build toward **30 minutes of brisk activity, 5 days a week** (walking counts). If that's a lot right now, start at 10–15 minutes daily and add 5 minutes each week.
+
+### Other habits
+Aim for modest weight loss if applicable (even 5–7 lbs helps), keep alcohol light, and prioritize sleep — all three move these numbers.
+
+### What to track & when to re-test
+Log your weight weekly and your lab numbers each time you re-test. Re-check the full lipid panel in about 12 weeks and bring it to your doctor.
+
+*Sample output shown in the hosted demo. Run the app locally with your own Anthropic API key for a plan personalized to the numbers you enter.*"""
+
 app = Flask(__name__)
 
 # Create the client lazily so the page still loads (and the tracking features
@@ -115,8 +143,9 @@ def plan():
     data = request.get_json(force=True) or {}
     if not data.get("ldl") and not data.get("total_chol"):
         return jsonify({"error": "Please enter at least a total or LDL cholesterol number."}), 400
+    # No key (e.g. the free hosted demo): serve a clearly-labeled sample plan.
     if not os.environ.get("ANTHROPIC_API_KEY"):
-        return jsonify({"error": "Claude API key not set. Set ANTHROPIC_API_KEY and restart (see README)."}), 500
+        return jsonify({"plan": SAMPLE_PLAN, "demo": True})
     # Demo rate limit
     now = time.time()
     while _plan_calls and now - _plan_calls[0] > PLAN_RATE_WINDOW:
@@ -138,7 +167,7 @@ def plan():
         return jsonify({"error": f"Claude API error: {e}"}), 502
 
     plan_text = "".join(b.text for b in response.content if b.type == "text")
-    return jsonify({"plan": plan_text})
+    return jsonify({"plan": plan_text, "demo": False})
 
 
 def _load_entries() -> list:

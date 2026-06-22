@@ -265,6 +265,15 @@ tbody tr:hover { background: #FAFBF9; }
   border-radius: 8px;
   font-size: 0.88rem;
 }
+.demo-banner {
+  background: #EEF3FB;
+  border: 1px solid #C9D8F0;
+  color: #2F4D7A;
+  padding: 11px 15px;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  margin-bottom: 14px;
+}
 .loading { color: var(--muted); font-style: italic; display: flex; align-items: center; gap: 10px; }
 .pulse-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--rose); animation: pulse 1s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }

@@ -92,7 +92,10 @@ document.getElementById("plan-form").addEventListener("submit", async (e) => {
     });
     const json = await res.json();
     if (!res.ok) throw new Error(json.error || "Something went wrong.");
-    out.innerHTML = renderMarkdown(json.plan);
+    const banner = json.demo
+      ? '<div class="demo-banner">🧪 <strong>Demo mode.</strong> This hosted demo runs without an API key, so it shows a sample plan. Run the app locally with your own Anthropic API key to generate one tailored to the numbers above.</div>'
+      : "";
+    out.innerHTML = banner + renderMarkdown(json.plan);
   } catch (err) {
     out.innerHTML = `<p style="color:#cb5a4c">${err.message}</p>`;
   } finally {
